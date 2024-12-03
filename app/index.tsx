@@ -1,46 +1,49 @@
+import { Colors } from "@/constant/colors";
+import { fonts } from "@/constant/fonts";
+import { slides } from "@/constant/intro_slide";
 import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
-const slides = [
-  {
-    key: 1,
-    title: "Sodaqo itu apa sih?",
-    text: "SODAQO.id merupakan inisiatif gerakan masyarakat yang muncul karena keresahan dengan keadaan orang-orang yang membutuhkan, terutama dhuafa tunawisma yang hidup menggelandang di tengah kota besar. ",
-    image: require("@/assets/images/sodaqo/ilustrations/ilustration4.png"),
-    backgroundColor: "#59b2ab",
-  },
-  {
-    key: 2,
-    title: "Tujuan Sodaqo",
-    text: "SODAQO.id merupakan inisiatif gerakan masyarakat yang muncul karena keresahan dengan keadaan orang-orang yang membutuhkan, terutama dhuafa tunawisma yang hidup menggelandang di tengah kota besar. ",
-    image: require("@/assets/images/sodaqo/ilustrations/ilustration5.png"),
-    backgroundColor: "#febe29",
-  },
-  {
-    key: 3,
-    title: "Kegiatan Sodaqo",
-    text: "SODAQO.id merupakan inisiatif gerakan masyarakat yang muncul karena keresahan dengan keadaan orang-orang yang membutuhkan, terutama dhuafa tunawisma yang hidup menggelandang di tengah kota besar. ",
-    image: require("@/assets/images/sodaqo/ilustrations/ilustration6.png"),
-    backgroundColor: "#22bcb5",
-  },
-];
-
 export default function Index() {
   const [showRealApp, setShowRealApp] = useState(false);
-  const _renderItem = ({ item }) => {
+  const _renderItem = ({ item }: { item: any }) => {
     return (
       <View style={styles.slide}>
-        <Text style={styles.title}>{item.title}</Text>
         <Image source={item.image} />
-        <Text style={styles.text}>{item.text}</Text>
+        <View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.text}>{item.text}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  const _renderSkip = () => {
+    return (
+      <View>
+        <Text style={{ color: Colors.primary, fontSize: 18 }}>Lewati</Text>
+      </View>
+    );
+  };
+
+  const _renderNext = () => {
+    return (
+      <View>
+        <Text style={{ color: "orange", fontSize: 18 }}>Selanjutnya</Text>
+      </View>
+    );
+  };
+
+  const _renderDone = () => {
+    return (
+      <View>
+        <Text style={{ color: "orange", fontSize: 18 }}>Selanjutnya</Text>
       </View>
     );
   };
 
   const _onDone = () => {
-    // User finished the introduction. Show real app through
-    // navigation or simply by controlling state
     setShowRealApp(true);
   };
 
@@ -62,7 +65,19 @@ export default function Index() {
         <AppIntroSlider
           renderItem={_renderItem}
           data={slides}
+          showSkipButton
+          onSkip={_onDone}
+          renderSkipButton={_renderSkip}
+          renderNextButton={_renderNext}
+          renderDoneButton={_renderDone}
           onDone={_onDone}
+          doneLabel="Selanjutnya"
+          dotStyle={{
+            display: "none",
+          }}
+          activeDotStyle={{
+            display: "none",
+          }}
         />
       );
     }
@@ -72,7 +87,19 @@ export default function Index() {
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
+    marginHorizontal: 30,
+  },
+  title: {
+    fontSize: fonts.size.l1,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: Colors.primary,
+  },
+  text: {
+    marginTop: 10,
+    fontSize: fonts.size.m2,
+    fontWeight: fonts.weight.semiThin,
   },
 });
